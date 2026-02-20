@@ -30,7 +30,6 @@ COMMENTS    = [
     "Stunning visuals", "Poor character development", "Exceeded my expectations",
 ]
 
-# ── CLEAR EXISTING DATA ────────────────────────────────────────────────
 print("")
 print("  Seeding Database")
 print("  " + "=" * 40)
@@ -45,7 +44,6 @@ db.query(Media).delete()
 db.query(User).delete()
 db.commit()
 
-# ── USERS — password = username + "_password" ──────────────────────────
 #print("  Creating users...")
 users     = []
 usernames = []
@@ -59,7 +57,7 @@ for _ in range(50):
 db.commit()
 print(f"  Users created    : {len(users)}")
 
-# ── MEDIA ──────────────────────────────────────────────────────────────
+
 print("  Creating media...")
 media_list = []
 for _ in range(100):
@@ -74,7 +72,7 @@ for _ in range(100):
 db.commit()
 print(f"  Media created    : {len(media_list)}")
 
-# ── REVIEWS ────────────────────────────────────────────────────────────
+
 print("  Creating reviews...")
 seen, count, attempts = set(), 0, 0
 while count < 500 and attempts < 5000:
@@ -94,7 +92,7 @@ while count < 500 and attempts < 5000:
 db.commit()
 print(f"  Reviews created  : {count}")
 
-# ── RATING SUMMARIES ───────────────────────────────────────────────────
+
 print("  Building rating summaries...")
 for media_id, avg_r, cnt in (
     db.query(Review.media_id, func.avg(Review.rating), func.count(Review.id))
@@ -107,7 +105,7 @@ for media_id, avg_r, cnt in (
 db.commit()
 print("  Summaries built  : Done")
 
-# ── USER TASTE PROFILES ────────────────────────────────────────────────
+
 print("  Building taste profiles...")
 from services.taste_profile import rebuild_user_summary
 for u in users:
@@ -118,13 +116,3 @@ db.close()
 
 print("")
 print("  Seed Complete")
-print("  " + "=" * 50)
-print("  Password rule: password = username + '_password'")
-print("")
-print(f"  Example login:")
-print(f"    python media_review.py --login {usernames[0]} {usernames[0]}_password")
-print("")
-print("  Or register your own account:")
-print("    python media_review.py --register manya manya123")
-print("    python media_review.py --login manya manya123")
-print("")
