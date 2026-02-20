@@ -85,16 +85,10 @@ def login(username: str, password: str):
         print("  Login Successful")
         print("  " + "=" * 50)
         print(f"  Username   : {username}")
-        print(f"  Token      : {token}")
+        #print(f"  Token      : {token}")
         print(f"  Expires in : {SESSION_TTL_MINUTES} minutes")
         print("  " + "=" * 50)
-        print("")
-        print("  IMPORTANT: Use --token <your-token> with all review commands.")
-        print("")
-        print("  Example:")
-        print(f"    python media_review.py --review 1 5 \"Great film\" --token {token}")
-        print(f"    python media_review.py --bulk-review reviews.csv --token {token}")
-        print("")
+        
         return token
     finally:
         db.close()

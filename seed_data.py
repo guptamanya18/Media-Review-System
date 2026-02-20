@@ -34,7 +34,7 @@ COMMENTS    = [
 print("")
 print("  Seeding Database")
 print("  " + "=" * 40)
-print("  Clearing existing data...")
+#print("  Clearing existing data...")
 
 db.query(Subscription).delete()
 db.query(UserTaste).delete()
@@ -46,7 +46,7 @@ db.query(User).delete()
 db.commit()
 
 # ── USERS — password = username + "_password" ──────────────────────────
-print("  Creating users...")
+#print("  Creating users...")
 users     = []
 usernames = []
 for _ in range(50):
