@@ -94,8 +94,6 @@ def view_reviews(db: Session, media_id: int):
     ratings = [r.rating for r in reviews]
     stats = {
         "avg":    round(statistics.mean(ratings), 2),
-        "median": statistics.median(ratings),
-        "stdev":  round(statistics.stdev(ratings), 2) if len(ratings) > 1 else 0,
         "min":    min(ratings),
         "max":    max(ratings),
         "total":  len(ratings),
@@ -118,8 +116,6 @@ def _print_reviews(reviews, stats, media_id):
     print("  " + "-" * 60)
     print(f"  Statistics")
     print(f"  {'Average':<15}: {stats['avg']}")
-    print(f"  {'Median':<15}: {stats['median']}")
-    print(f"  {'Std Deviation':<15}: {stats['stdev']}")
     print(f"  {'Min Rating':<15}: {stats['min']}")
     print(f"  {'Max Rating':<15}: {stats['max']}")
     print(f"  {'Total Reviews':<15}: {stats['total']}")

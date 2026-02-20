@@ -28,8 +28,6 @@ def register(username: str, password: str):
         print(f"  Username : {username}")
         print("  Status   : Account created")
         print("")
-        print("  Next: python media_review.py --login " + username + " <password>")
-        print("")
     finally:
         db.close()
 
