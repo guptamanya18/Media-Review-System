@@ -1,39 +1,7 @@
-"""
-Media Review System - CLI
 
-USAGE:
-  python media_review.py --register <username> <password>
-  python media_review.py --login <username> <password>
-  python media_review.py --logout
-
-  python media_review.py --list
-  python media_review.py --search <title>
-  python media_review.py --top-rated
-
-  python media_review.py --review <media_id> <rating> <comment> --token <token>
-  python media_review.py --bulk-review reviews.csv --token <token>
-  python media_review.py --view-reviews <media_id>
-  python media_review.py --view-bulk-log
-
-  python media_review.py --review1 <media_id> <rating> <comment> --token <token>
-  python media_review.py --process-queue --token <token>
-  python media_review.py --queue-status
-
-  python media_review.py --recommend <user_id>
-  python media_review.py --insights <media_id>
-  python media_review.py --notification <media_id>
-  python media_review.py --my-notifications
-
-  python media_review.py --add-media <title> <type> <genre> <year>
-  python media_review.py --rebuild-summaries
-
-SECURITY:
-  All review/write operations require --token <token>.
-  Your token is printed after login. Copy it and use it with --token.
-"""
 import argparse, sys
 
-# ── PARSER ──────────────────────────────────────────────────────────────
+
 p = argparse.ArgumentParser(
     prog="media_review.py",
     description="Media Review System CLI",

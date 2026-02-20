@@ -13,20 +13,25 @@ import time
 REDIS_AVAILABLE = False
 _redis = None
 
-try:
-    import redis as _redis_lib
-    _client = _redis_lib.Redis(
-        host="172.28.194.70", port=6379, db=0,
-        socket_connect_timeout=1,
-        socket_timeout=1,
-        decode_responses=True
-    )
-    _client.ping()
-    _redis = _client
-    REDIS_AVAILABLE = True
-    
-except Exception:
-    REDIS_AVAILABLE=False
+def _try_redis_connection():
+    """Try to connect to Redis once. Import redis lazily to avoid slow startup."""
+    try:
+        import redis
+        client = redis.Redis(
+            host="172.28.194.70", port=6379, db=0,
+            socket_connect_timeout=0.05,
+            socket_timeout=0.05,
+            decode_responses=True
+        )
+        client.ping()
+        return client
+    except (ImportError, Exception):
+        return None
+
+# Use lazy evaluation: only try connection if explicitly needed
+# For now, just disable Redis (it's not available and slows startup)
+REDIS_AVAILABLE = False
+_redis = None
 
 # In-memory fallback: {key: (value, expire_at_epoch)}
 _mem: dict = {}

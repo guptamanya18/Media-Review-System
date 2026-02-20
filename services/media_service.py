@@ -22,6 +22,7 @@ def add_media(db: Session, title: str, genre: str, year: int, media_type: str = 
 
 
 def list_media(db: Session):
+    
     cached = cache_get("media:list")
     if cached:
         _print_media_table(cached)
