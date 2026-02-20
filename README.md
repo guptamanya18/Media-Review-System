@@ -301,7 +301,7 @@ The type is also **case-insensitive** — `"MOVIE"`, `"Movie"`, and `"movie"` al
 
 ---
 
-## 👀 Design Pattern 2: Observer Pattern
+##  Design Pattern 2: Observer Pattern
 
 **File:** `services/notification_service.py`
 
@@ -324,7 +324,7 @@ def notify_subscribers(db, media_id, message):
 
 ---
 
-## ⚡ Async Processing — Bulk Reviews
+##  Async Processing — Bulk Reviews
 
 **File:** `services/review_service.py` and `services/async_review_queue.py`
 
@@ -568,9 +568,9 @@ python media_review.py --review 2 5 "Loved it" --token abc-123
 
 4. add_review(db, user_id=1, media_id=2, rating=5, comment="Loved it") is called
 
-5. Validate rating is 1–5 ✅
-6. Query media table — confirm media ID 2 exists ✅
-7. Check reviews table — no duplicate for (user_id=1, media_id=2) ✅
+5. Validate rating is 1–5 
+6. Query media table — confirm media ID 2 exists 
+7. Check reviews table — no duplicate for (user_id=1, media_id=2) 
 8. Insert new Review row into DB
 9. db.commit()
 
@@ -630,46 +630,6 @@ python media_review.py --bulk-review reviews.csv --token abc-123
 
 ---
 
-##  Common Interview Questions & Answers
-
-**Q: Why use `asyncio` with a `ThreadPoolExecutor` for DB writes?**
-
-`asyncio` is single-threaded and cannot do blocking I/O natively. SQLite calls are blocking. So we use `run_in_executor` to offload each DB write to a thread pool, while `asyncio.gather` coordinates them. This gives us true concurrency for I/O-bound operations without rewriting everything in threads.
-
-**Q: Why is there a semaphore in `async_review_queue.py`?**
-
-The semaphore `asyncio.Semaphore(5)` limits how many queue jobs run simultaneously. Without it, 100 pending jobs would all try to open DB connections at once, which can overwhelm SQLite. The semaphore is a flow-control mechanism.
-
-**Q: Why does `add_review` have a `skip_taste_rebuild` flag?**
-
-`rebuild_user_summary()` recalculates genre taste from all of a user's reviews — it's a DB read+write. Calling it for every row in a 200-row CSV would be 200 unnecessary rebuilds. The flag skips this during bulk processing, and it's done once at the end instead.
-
-**Q: How does the cache handle Redis being unavailable?**
-
-In `cache.py`, on import the code tries `_client.ping()`. If that raises any exception, `REDIS_AVAILABLE` stays `False`. All `cache_get`, `cache_set`, `cache_delete` calls then use a plain Python dict `_mem` with expiry timestamps stored alongside each value. The TTL check happens on read: if `time.time() > expire_at`, the key is deleted and `None` is returned.
-
-**Q: What prevents a user from reviewing the same media twice?**
-
-In `add_review()`:
-```python
-if db.query(Review).filter_by(user_id=user_id, media_id=media_id).first():
-    return "duplicate"
-```
-One review per (user_id, media_id) pair is enforced at the service layer. During bulk processing, duplicates are logged as `SKIP` events.
-
-**Q: How are recommendations generated?**
-
-Collaborative filtering using cosine similarity on genre taste profiles. Each user has a profile like `{Action: 4.5, Drama: 3.0}`. The cosine similarity between two such vectors measures how aligned their tastes are. The top-3 most similar users are found, then media they rated ≥ 4 (that the target hasn't seen) are recommended, ranked by how many similar users suggested it.
-
-**Q: Why are there two summary tables — `rating_summary` and `review_summaries`?**
-
-`rating_summary` is updated live on every new review via `_update_rating_summary()`. `review_summaries` is updated via `update_review_summary()` from `review_summary_service.py`. The `--rebuild-summaries` command rebuilds both from scratch using aggregation queries. This design separates the incremental live updates from the full rebuild path, making both safer to change independently.
-
-**Q: What pattern does the notification system use?**
-
-The **Observer Pattern**. Users are observers; media items are subjects. Subscriptions are stored in the DB (not memory), so they persist across CLI restarts. When a review is posted, all subscribers of that media get notified. This is a simplified, CLI-based version of what a real event bus or webhook system would do.
-
----
 
 ##  Redis Setup (Optional)
 
@@ -686,11 +646,20 @@ The Redis connection is configured in `app/cache.py` — update the `host` if yo
 
 ---
 
-##  Notes for Developers
+##  Current Limitations:
 
-- All DB sessions are opened and closed explicitly (`db = SessionLocal()` → `db.close()`). There is no context manager / dependency injection framework.
-- The project does not use any web framework (no Flask/FastAPI). It is purely a CLI application.
-- The `--token` requirement for write commands is a deliberate security design to prevent casual misuse — it mirrors how REST APIs require Authorization headers.
-- The `reviews.csv` file included in the project can be used directly with `--bulk-review` for demo purposes.
-- `logs/bulk_reviews.log` grows indefinitely. In production, you'd add log rotation.
-- SQLite is used for simplicity. In production, replace with PostgreSQL by changing the connection string in `app/db.py`.
+The current system uses SQLite, which limits concurrency and scalability. The recommendation engine is rule-based and not ML-driven. Authentication is token-based but not JWT-secured. The system is CLI-based and not deployed as a web service. Logging and monitoring are basic and can be enhanced for production environments.
+
+## Future Enhancements
+
+The following improvements are planned:
+
+- Replace SQLite with PostgreSQL
+- Convert CLI to REST API
+- Add ML-based recommendation
+- Implement JWT authentication
+- Dockerize entire application
+- Add CI/CD pipeline
+- Add monitoring & metrics dashboard
+- Improve concurrency control
+- Add distributed cache support
