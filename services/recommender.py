@@ -1,6 +1,4 @@
-"""
-Collaborative filtering recommender using cosine similarity on genre taste profiles.
-"""
+
 from app.models import User, Review, Media
 from app.cache import cache_get, cache_set
 from services.user_profile import build_user_profile

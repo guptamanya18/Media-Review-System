@@ -1,15 +1,4 @@
-"""
-Auth Service
 
-Session rules:
-  - Login creates a token saved to .session file and prints the token.
-  - Reviews require --token <token> to be passed explicitly for security.
-  - If .session already exists and is valid, login is blocked.
-  - Logout deletes .session file and invalidates token in DB.
-  - Token expires after 30 minutes.
-
-passlib/bcrypt is lazy-imported only during register/login.
-"""
 import uuid
 from datetime import datetime, timedelta
 from app.db import SessionLocal
@@ -140,7 +129,7 @@ def logout():
 
 
 def validate_session() -> int | None:
-    """Read .session file and validate token. Returns user_id or None."""
+    
     token = _read_session_file()
     if not token:
         return None
@@ -148,11 +137,7 @@ def validate_session() -> int | None:
 
 
 def validate_token_arg(token: str) -> int | None:
-    """
-    Validate a token passed explicitly via --token flag.
-    Returns user_id if valid, None otherwise.
-    This is the security gate for all write/review operations.
-    """
+    
     if not token:
         return None
     return _validate_token(token)
@@ -188,5 +173,5 @@ def _write_session_file(token: str):
 
 
 def get_current_user_id() -> int | None:
-    """Used by non-review commands (notifications, add-media, etc.)."""
+    
     return validate_session()

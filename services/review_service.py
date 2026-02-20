@@ -1,9 +1,4 @@
-"""
-Review Service
 
-Security: write operations require a validated token passed via --token flag.
-Performance: skip_taste_rebuild during bulk; rebuild once at end.
-"""
 import asyncio, csv, statistics, time
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
@@ -131,7 +126,6 @@ def _print_reviews(reviews, stats, media_id):
     print("")
 
 
-# ── ASYNC BULK REVIEW ──────────────────────────────────────────────────
 
 async def _one_task(user_id, media_id, rating, comment, row):
     from services.bulk_logger import log_success, log_skip, log_fail

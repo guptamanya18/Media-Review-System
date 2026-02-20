@@ -2,9 +2,7 @@ from collections import defaultdict
 from app.models import Review, Media
 
 def build_user_profile(user_id, db):
-    """
-    Returns: {genre: avg_rating}
-    """
+    
 
     reviews = (
         db.query(Review, Media.genre)

@@ -1,10 +1,4 @@
-"""
-Async Review Queue — fire-and-forget concurrent reviews.
 
---review1, --review2 ... write to review_queue.jsonl instantly and return.
---process-queue flushes all pending reviews concurrently.
-Requires --token for security.
-"""
 import asyncio, json, os, time, threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime

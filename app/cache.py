@@ -1,12 +1,4 @@
-"""
-Redis Cache with in-memory fallback.
 
-If Redis is running (via WSL): all cache ops use Redis — fast, shared across processes.
-If Redis is NOT running: falls back to in-memory dict — still works, just per-process.
-
-To start Redis (WSL): sudo service redis-server start
-See SETUP_REDIS_WSL.md for full setup guide.
-"""
 import json
 import time
 
@@ -14,7 +6,7 @@ REDIS_AVAILABLE = False
 _redis = None
 
 def _try_redis_connection():
-    """Try to connect to Redis once. Import redis lazily to avoid slow startup."""
+    
     try:
         import redis
         client = redis.Redis(
@@ -28,12 +20,11 @@ def _try_redis_connection():
     except (ImportError, Exception):
         return None
 
-# Use lazy evaluation: only try connection if explicitly needed
-# For now, just disable Redis (it's not available and slows startup)
+
 REDIS_AVAILABLE = False
 _redis = None
 
-# In-memory fallback: {key: (value, expire_at_epoch)}
+
 _mem: dict = {}
 DEFAULT_TTL = 300
 

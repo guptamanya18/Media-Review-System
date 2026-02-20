@@ -1,6 +1,4 @@
-"""
-Tests for authentication service using in-memory DB.
-"""
+
 import unittest
 import os
 from sqlalchemy import create_engine
@@ -8,7 +6,6 @@ from sqlalchemy.orm import sessionmaker
 from unittest.mock import patch
 
 
-# Patch the SessionLocal used inside auth_service to use in-memory DB
 import app.db as app_db
 
 _engine = create_engine("sqlite:///:memory:", echo=False)
@@ -17,7 +14,7 @@ from app.models import Base, User, Session as DBSession
 Base.metadata.create_all(bind=_engine)
 _Session = sessionmaker(bind=_engine)
 
-# Monkey-patch
+
 app_db.engine = _engine
 app_db.SessionLocal = _Session
 

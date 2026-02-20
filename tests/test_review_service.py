@@ -1,6 +1,4 @@
-"""
-Tests for review_service using an in-memory SQLite database.
-"""
+
 import unittest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

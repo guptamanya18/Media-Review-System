@@ -1,6 +1,4 @@
-"""
-Observer Pattern — DB-backed subscriptions (survive between CLI runs).
-"""
+
 from sqlalchemy.orm import Session
 from app.models import Subscription, User, Media
 from app.db import SessionLocal

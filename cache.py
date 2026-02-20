@@ -5,7 +5,7 @@ try:
     r = redis.Redis(host='localhost', port=6379, decode_responses=True)
     r.ping()
 except redis.ConnectionError:
-    r = None  # fallback if Redis not running
+    r = None  
 
 
 def get_cache(key):

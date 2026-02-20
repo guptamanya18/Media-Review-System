@@ -1,10 +1,11 @@
 # 🎬 Media Review System
 
-A command-line application built in Python that lets users register, log in, browse media (movies, web shows, songs), submit reviews, get personalized recommendations, and subscribe to review notifications. The project is designed to demonstrate several real-world software engineering patterns including the **Factory Pattern**, **Observer Pattern**, **Async Processing**, **Caching with Fallback**, and **Token-Based Authentication**.
+A command-line application built in Python that lets users register, log in, browse media (movies, web shows, songs), submit reviews, get personalized recommendations, and subscribe to review notifications. The project is designed to demonstrate several real-world software engineering patterns including the **Python**,**SQLAlchemy**,**SQLite**,**Factory Pattern**, **Observer Pattern**, **Async Processing**, **Caching with Fallback** and **Token-Based Authentication**.
+
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 media-review/
@@ -46,7 +47,7 @@ media-review/
 
 ---
 
-## 🗃️ Database Schema
+##  Database Schema
 
 The project uses **SQLite** via **SQLAlchemy ORM**. The database file is `media.db`, created in the working directory.
 
@@ -69,7 +70,7 @@ The project uses **SQLite** via **SQLAlchemy ORM**. The database file is `media.
 
 ---
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ### Prerequisites
 
@@ -117,7 +118,7 @@ faker
 
 ---
 
-## 🚀 How to Use — All CLI Commands
+##  How to Use — All CLI Commands
 
 ### Authentication
 
@@ -233,7 +234,7 @@ python media_review.py --rebuild-summaries
 
 ---
 
-## 🔒 Authentication — How It Works
+##  Authentication — How It Works
 
 There are **two authentication modes** in this system:
 
@@ -263,7 +264,7 @@ user = User(username=username, password_hash=pwd.hash(password))
 
 ---
 
-## 🏭 Design Pattern 1: Factory Pattern
+##  Design Pattern 1: Factory Pattern
 
 **File:** `services/media_factory.py`
 
@@ -366,7 +367,7 @@ A **threading lock** (`threading.Lock()`) protects the queue file from race cond
 
 ---
 
-## 💾 Caching — Redis with In-Memory Fallback
+##  Caching — Redis with In-Memory Fallback
 
 **File:** `app/cache.py`
 
@@ -406,7 +407,7 @@ cache_delete(f"recommend:{user_id}")
 
 ---
 
-## 🤖 Recommendation System
+##  Recommendation System
 
 **Files:** `services/recommender.py`, `services/user_profile.py`, `services/similarity.py`, `services/taste_profile.py`
 
@@ -462,7 +463,7 @@ If a user has no reviews (no taste profile), the system falls back to showing th
 
 ---
 
-## 📊 Review Analytics (`--insights`)
+##  Review Analytics (`--insights`)
 
 **File:** `services/review_analytics.py`
 
@@ -477,7 +478,7 @@ This is a simple keyword-based sentiment analysis (not ML-based), but it works w
 
 ---
 
-## 📋 Bulk Logging
+##  Bulk Logging
 
 **File:** `services/bulk_logger.py`
 
@@ -504,7 +505,7 @@ python media_review.py --view-bulk-log
 
 ---
 
-## 🧪 Tests
+##  Tests
 
 **Location:** `tests/`
 
@@ -547,7 +548,7 @@ python -m unittest discover tests/
 
 ---
 
-## 🔄 Full Process Flow — Submitting a Review
+##  Full Process Flow — Submitting a Review
 
 Here is the end-to-end flow when a user runs:
 ```bash
@@ -604,7 +605,7 @@ python media_review.py --review 2 5 "Loved it" --token abc-123
 
 ---
 
-## 🔄 Full Process Flow — Bulk Review
+##  Full Process Flow — Bulk Review
 
 ```bash
 python media_review.py --bulk-review reviews.csv --token abc-123
@@ -629,7 +630,7 @@ python media_review.py --bulk-review reviews.csv --token abc-123
 
 ---
 
-## ❓ Common Interview Questions & Answers
+##  Common Interview Questions & Answers
 
 **Q: Why use `asyncio` with a `ThreadPoolExecutor` for DB writes?**
 
@@ -670,7 +671,7 @@ The **Observer Pattern**. Users are observers; media items are subjects. Subscri
 
 ---
 
-## 🔧 Redis Setup (Optional)
+##  Redis Setup (Optional)
 
 The app works without Redis. If you want to enable Redis caching:
 
@@ -685,7 +686,7 @@ The Redis connection is configured in `app/cache.py` — update the `host` if yo
 
 ---
 
-## 📝 Notes for Developers
+##  Notes for Developers
 
 - All DB sessions are opened and closed explicitly (`db = SessionLocal()` → `db.close()`). There is no context manager / dependency injection framework.
 - The project does not use any web framework (no Flask/FastAPI). It is purely a CLI application.

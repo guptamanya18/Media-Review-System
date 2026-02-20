@@ -1,4 +1,4 @@
-"""Initialize the database — create all tables."""
+
 from app.db import engine
 from app.models import Base
 

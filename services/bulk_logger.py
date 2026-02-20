@@ -1,8 +1,4 @@
-"""
-Bulk Review Logger
-Writes structured JSON lines to logs/bulk_reviews.log
---view-bulk-log displays a clean formatted table from that file.
-"""
+
 import json
 from datetime import datetime
 from pathlib import Path

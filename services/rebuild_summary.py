@@ -1,6 +1,4 @@
-"""
-Rebuild materialised-view tables (RatingSummary, ReviewSummary).
-"""
+
 from sqlalchemy import func
 from datetime import datetime
 from app.db import SessionLocal

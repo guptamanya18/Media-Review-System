@@ -1,9 +1,7 @@
 import math
 
 def cosine_similarity(p1, p2):
-    """
-    p1, p2 = {genre: rating}
-    """
+    
 
     common = set(p1.keys()) & set(p2.keys())
     if not common:

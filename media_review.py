@@ -62,8 +62,6 @@ p.add_argument("--rebuild-summaries", action="store_true",
 args = p.parse_args()
 
 
-# ── HELPERS ─────────────────────────────────────────────────────────────
-
 def _db():
     from app.db import SessionLocal
     return SessionLocal()
@@ -119,10 +117,6 @@ def _require_login():
     return uid
 
 
-# ════════════════════════════════════════════
-# AUTH COMMANDS
-# ════════════════════════════════════════════
-
 if args.register:
     from services.auth_service import register
     register(args.register[0], args.register[1])
@@ -139,9 +133,6 @@ if args.logout:
     sys.exit(0)
 
 
-# ════════════════════════════════════════════
-# READ COMMANDS — no login required
-# ════════════════════════════════════════════
 
 if args.list:
     from services.media_service import list_media
@@ -206,9 +197,6 @@ if args.view_bulk_log:
     sys.exit(0)
 
 
-# ════════════════════════════════════════════
-# WRITE COMMANDS — require --token
-# ════════════════════════════════════════════
 
 if args.review:
     uid = _require_token()
@@ -248,9 +236,6 @@ if args.process_queue:
     sys.exit(0)
 
 
-# ════════════════════════════════════════════
-# LOGIN-REQUIRED COMMANDS (session file, no explicit token)
-# ════════════════════════════════════════════
 
 if args.notification:
     uid = _require_login()
